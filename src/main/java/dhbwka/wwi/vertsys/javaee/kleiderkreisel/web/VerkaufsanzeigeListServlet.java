@@ -45,7 +45,6 @@ public class VerkaufsanzeigeListServlet extends HttpServlet {
         // Suchparameter aus der URL auslesen
         String searchText = request.getParameter("search_text");
         String searchCategory = request.getParameter("search_category");
-        String searchStatus = request.getParameter("search_status");
 
         // Anzuzeigende Aufgaben suchen
         Category category = null;
