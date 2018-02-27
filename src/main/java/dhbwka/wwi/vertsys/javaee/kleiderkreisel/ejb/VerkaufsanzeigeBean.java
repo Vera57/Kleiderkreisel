@@ -60,7 +60,7 @@ public class VerkaufsanzeigeBean extends EntityBean<Verkaufsanzeige, Long> {
         query.select(from);
 
         // ORDER BY dueDate, dueTime
-        query.orderBy(cb.asc(from.get("dueDate")), cb.asc(from.get("dueTime")));
+        query.orderBy(cb.asc(from.get("dueDate")));
         
         // WHERE t.shortText LIKE :search
         if (search != null && !search.trim().isEmpty()) {

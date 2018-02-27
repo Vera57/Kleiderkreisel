@@ -150,9 +150,9 @@ public class CategoryListServlet extends HttpServlet {
             }
             
             // Bei allen betroffenen Aufgaben, den Bezug zur Kategorie aufheben
-            category.getTasks().forEach((Verkaufsanzeige task) -> {
-                task.setCategory(null);
-                this.VerkaufsanzeigeBean.update(task);
+            category.getanzeige().forEach((Verkaufsanzeige anzeige) -> {
+                anzeige.setCategory(null);
+                this.VerkaufsanzeigeBean.update(anzeige);
             });
             
             // Und weg damit

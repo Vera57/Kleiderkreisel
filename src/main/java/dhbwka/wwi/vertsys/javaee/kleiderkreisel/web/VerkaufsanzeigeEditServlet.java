@@ -62,11 +62,11 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
         Verkaufsanzeige anzeige = this.getRequestedAnzeige(request);
         request.setAttribute("edit", anzeige.getId() != 0);
                                 
-        if (session.getAttribute("anzeige_form") == null) {
+        /*if (session.getAttribute("anzeige_form") == null) {
             // Keine Formulardaten mit fehlerhaften Daten in der Session,
             // daher Formulardaten aus dem Datenbankobjekt übernehmen
             request.setAttribute("anzeige_form", this.createAnzeigeForm(anzeige));
-        }
+        }*/
 
         // Anfrage an die JSP weiterleiten
         request.getRequestDispatcher("/WEB-INF/app/anzeige_edit.jsp").forward(request, response);
@@ -114,7 +114,7 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
         String anzeigeErsteller=request.getParameter("anzeige_ersteller");
         String anzeigeCategory = request.getParameter("anzeige_category");
         String anzeigeArt=request.getParameter("anzeige_Art");
-        String anzeigeShortText = request.getParameter("anzeige_short_text");
+        String anzeigehortText = request.getParameter("anzeige_short_text");
         String anzeigeLongText = request.getParameter("anzeige_long_text");
         String anzeigeDueDate = request.getParameter("anzeige_due_date");
         String anzeigePreis=request.getParameter("anzeigePreis");
@@ -146,7 +146,7 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
             errors.add("Das Datum muss dem Format dd.mm.yyyy entsprechen.");
         }
 
-        anzeige.setShortText(anzeigeShortText);
+        anzeige.setShortText(anzeigehortText);
         anzeige.setLongText(anzeigeLongText);
         
         long preis=new Long(anzeigePreis);
@@ -268,13 +268,11 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
             });
         }
         
-        values.put("anzeige_art", new String[]{
-            anzeige.getAnzeigeArt().toString()
-        });
+      /*
 
         values.put("anzeige_short_text", new String[]{
             anzeige.getShortText()
-        });
+        });*/
 
         values.put("anzeige_long_text", new String[]{
             anzeige.getLongText()

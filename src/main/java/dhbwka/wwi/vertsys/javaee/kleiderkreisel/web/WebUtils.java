@@ -10,7 +10,6 @@
 package dhbwka.wwi.vertsys.javaee.kleiderkreisel.web;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 public class WebUtils {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
-    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     /**
      * Stellt sicher, dass einer URL der Kontextpfad der Anwendung vorangestellt
@@ -50,16 +48,6 @@ public class WebUtils {
     }
 
     /**
-     * Formatiert eine Uhrzeit für die Ausgabe, z.B. 11:50:00
-     *
-     * @param time Uhrzeit
-     * @return String für die Ausgabe
-     */
-    public static String formatTime(Time time) {
-        return TIME_FORMAT.format(time);
-    }
-
-    /**
      * Erzeugt ein Datumsobjekt aus dem übergebenen String, z.B. 03.06.1986
      *
      * @param input Eingegebener String
@@ -69,21 +57,6 @@ public class WebUtils {
         try {
             java.util.Date date = DATE_FORMAT.parse(input);
             return new Date(date.getTime());
-        } catch (ParseException ex) {
-            return null;
-        }
-    }
-
-    /**
-     * Erzeugt ein Uhrzeitobjekt aus dem übergebenen String, z.B. 09:20:00
-     *
-     * @param input Eingegebener String
-     * @return Uhrzeitobjekt oder null bei einem Fehler
-     */
-    public static Time parseTime(String input) {
-        try {
-            java.util.Date date = TIME_FORMAT.parse(input);
-            return new Time(date.getTime());
         } catch (ParseException ex) {
             return null;
         }

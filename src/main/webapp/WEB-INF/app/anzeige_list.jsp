@@ -19,12 +19,12 @@
     </jsp:attribute>
 
     <jsp:attribute name="head">
-        <link rel="stylesheet" href="<c:url value="/css/task_list.css"/>" />
+        <link rel="stylesheet" href="<c:url value="/css/anzeige_list.css"/>" />
     </jsp:attribute>
 
     <jsp:attribute name="menu">
         <div class="menuitem">
-            <a href="<c:url value="/app/task/new/"/>">Aufgabe anlegen</a>
+            <a href="<c:url value="/app/anzeige/new/"/>">Aufgabe anlegen</a>
         </div>
 
         <div class="menuitem">
@@ -64,7 +64,7 @@
 
         <%-- Gefundene Aufgaben --%>
         <c:choose>
-            <c:when test="${empty tasks}">
+            <c:when test="${empty anzeige}">
                 <p>
                     Es wurden keine Aufgaben gefunden. 🐈
                 </p>
@@ -82,25 +82,25 @@
                             <th>Fällig am</th>
                         </tr>
                     </thead>
-                    <c:forEach items="${tasks}" var="task">
+                    <c:forEach items="${anzeige}" var="anzeige">
                         <tr>
                             <td>
-                                <a href="<c:url value="/app/task/${task.id}/"/>">
-                                    <c:out value="${task.shortText}"/>
+                                <a href="<c:url value="/app/anzeige/${anzeige.id}/"/>">
+                                    <c:out value="${anzeige.shortText}"/>
                                 </a>
                             </td>
                             <td>
-                                <c:out value="${task.category.name}"/>
+                                <c:out value="${anzeige.category.name}"/>
                             </td>
                             <td>
-                                <c:out value="${task.owner.username}"/>
+                                <c:out value="${anzeige.owner.username}"/>
                             </td>
                             <td>
-                                <c:out value="${task.status.label}"/>
+                                <c:out value="${anzeige.status.label}"/>
                             </td>
                             <td>
-                                <c:out value="${utils.formatDate(task.dueDate)}"/>
-                                <c:out value="${utils.formatTime(task.dueTime)}"/>
+                                <c:out value="${utils.formatDate(anzeige.dueDate)}"/>
+                                <c:out value="${utils.formatTime(anzeige.dueTime)}"/>
                             </td>
                         </tr>
                     </c:forEach>
