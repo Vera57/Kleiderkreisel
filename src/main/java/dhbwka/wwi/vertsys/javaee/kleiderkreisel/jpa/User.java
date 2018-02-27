@@ -44,7 +44,13 @@ public class User implements Serializable {
     @Size(min = 5, max = 64, message = "Der Benutzername muss zwischen fünf und 64 Zeichen lang sein.")
     @NotNull(message = "Der Benutzername darf nicht leer sein.")
     private String username;
-    
+
+    /**public User(String username, String password) {
+        this.username = username;
+        this.password.password = password;
+        this.passwordHash = this.hashPassword(password);
+    } */
+
     public class Password {
         @Size(min = 6, max = 64, message = "Das Passwort muss zwischen sechs und 64 Zeichen lang sein.")
         public String password = "";
@@ -66,15 +72,47 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     List<Verkaufsanzeige> tasks = new ArrayList<>();
-
+    
+    @Column(name = "NAME", length = 64)
+    @NotNull(message = "Der Vor- und Nachname darf nicht leer sein.")
+    private String name;
+    
+    @Column(name = "ANSCHRIFT", length =64)
+    @NotNull (message = "Die Anschrift darf nicht leer sein.")
+    private String anschrift;
+    
+    @Column(name = "PLZ", length=5)
+    @NotNull (message = "Die Postleitzahl darf nicht leer sein.")
+    private String plz;
+    
+    @Column(name = "ORT", length = 64)
+    @NotNull (message = "Der Ort darf nicht leer sein.")
+    private String ort;
+    
+    @Column(name = "TELEFON", length = 64)
+    @NotNull (message = "Die Telefonnummer darf nicht leer sein.")
+    private String telefon; 
+    
+    @Column (name = "EMAIL", length = 64)
+    @NotNull (message = "Die E-Mailadresse darf icht leer sein.")
+    private String email;
+    
+    
     //<editor-fold defaultstate="collapsed" desc="Konstruktoren">
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, String name, String anschrift, String plz, String ort, String telefon, String email) {
         this.username = username;
         this.password.password = password;
         this.passwordHash = this.hashPassword(password);
+        this.name = name;
+        this.anschrift = anschrift; 
+        this.plz = plz;
+        this.ort = ort; 
+        this.telefon = telefon;
+        this.email = email;
+        
     }
     //</editor-fold>
 
@@ -93,6 +131,54 @@ public class User implements Serializable {
 
     public void setTasks(List<Verkaufsanzeige> tasks) {
         this.tasks = tasks;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getAnschrift() {
+        return anschrift;
+    }
+
+    public void setAnschrift(String anschrift) {
+        this.anschrift = anschrift;
+    }
+    
+    public String getPlz() {
+        return plz;
+    }
+
+    public void setPlz(String plz) {
+        this.plz = plz;
+    }
+    
+    public String getOrt() {
+        return ort;
+    }
+
+    public void setOrt(String ort) {
+        this.ort = ort;
+    }
+    
+    public String getTelefon() {
+        return telefon;
+    }
+
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     //</editor-fold>
 
