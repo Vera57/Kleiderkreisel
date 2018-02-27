@@ -45,12 +45,6 @@ public class User implements Serializable {
     @NotNull(message = "Der Benutzername darf nicht leer sein.")
     private String username;
 
-    /**public User(String username, String password) {
-        this.username = username;
-        this.password.password = password;
-        this.passwordHash = this.hashPassword(password);
-    } */
-
     public class Password {
         @Size(min = 6, max = 64, message = "Das Passwort muss zwischen sechs und 64 Zeichen lang sein.")
         public String password = "";

@@ -78,7 +78,7 @@
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_anschrfit" value="${signup_form.values["signup_anschrift"][0]}">
+                        <input type="text" name="signup_anschrift" value="${signup_form.values["signup_anschrift"][0]}">
                     </div>
                     
                     <label for="signup_plz">
@@ -86,7 +86,7 @@
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="number" name="signup_plz" value="${signup_form.values["signup_plz"][0]}">
+                        <input type="text" name="signup_plz" value="${signup_form.values["signup_plz"][0]}">
                     </div>
                     
                     <label for="signup_ort">
@@ -104,7 +104,7 @@
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="number" name="signup_telefon" value="${signup_form.values["signup_telefon"][0]}">
+                        <input type="text" name="signup_telefon" value="${signup_form.values["signup_telefon"][0]}">
                     </div>
                     
                     <label for="signup_email">
@@ -112,7 +112,7 @@
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_emaik" value="${signup_form.values["signup_email"][0]}">
+                        <input type="text" name="signup_email" value="${signup_form.values["signup_email"][0]}">
                     </div>
 
                     <%-- Button zum Abschicken --%>

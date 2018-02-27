@@ -37,7 +37,7 @@ public class UserBean {
     public User getCurrentUser() {
         return this.em.find(User.class, this.ctx.getCallerPrincipal().getName());
     }
-
+    
     /**
      *
      * @param username
