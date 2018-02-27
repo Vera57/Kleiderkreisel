@@ -111,7 +111,7 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
         // Formulareingaben prüfen
         List<String> errors = new ArrayList<>();
         
-        //String anzeigeErsteller=request.getParameter("anzeige_ersteller");
+        String anzeigeErsteller=request.getParameter("anzeige_ersteller");
         String anzeigeCategory = request.getParameter("anzeige_category");
         String anzeigeArt=request.getParameter("anzeige_Art");
         String anzeigeShortText = request.getParameter("anzeige_short_text");
@@ -123,11 +123,11 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
                 
         Verkaufsanzeige anzeige = this.getRequestedAnzeige(request);
         
-        /*try {
-            anzeige.setOwner(User.valueOf(anzeigeErsteller));
+        try {
+            anzeige.getOwner().getUsername();
         } catch (IllegalArgumentException ex) {
             errors.add("Der ausgewählte Benutzer ist nicht vorhanden.");
-        }*/
+        }
 
         if (anzeigeCategory != null && !anzeigeCategory.trim().isEmpty()) {
             try {
@@ -267,9 +267,9 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
                 anzeige.getCategory().toString()
             });
         }
-
-        values.put("anzeige_due_date", new String[]{
-            WebUtils.formatDate(anzeige.getDueDate())
+        
+        values.put("anzeige_art", new String[]{
+            anzeige.getAnzeigeArt().toString()
         });
 
         values.put("anzeige_short_text", new String[]{
@@ -278,6 +278,18 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
 
         values.put("anzeige_long_text", new String[]{
             anzeige.getLongText()
+        });
+        
+        values.put("anzeige_due_date", new String[]{
+            WebUtils.formatDate(anzeige.getDueDate())
+        });
+        
+        values.put("anzeige_preis", new String[]{
+            Long.toString(anzeige.getPreis())
+        });
+        
+        values.put("anzeige_preisArt",new String[]{
+            anzeige.getPreisArt().toString()
         });
 
         FormValues formValues = new FormValues();

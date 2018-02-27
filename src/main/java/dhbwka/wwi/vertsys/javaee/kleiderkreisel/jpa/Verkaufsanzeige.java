@@ -33,8 +33,8 @@ public class Verkaufsanzeige implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "task_ids")
-    @TableGenerator(name = "task_ids", initialValue = 0, allocationSize = 5000)
+    @GeneratedValue(generator = "anzeige_ids")
+    @TableGenerator(name = "anzeige_ids", initialValue = 0, allocationSize = 5000)
     private long id;
 
     @ManyToOne

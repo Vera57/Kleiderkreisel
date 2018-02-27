@@ -71,7 +71,7 @@ public class User implements Serializable {
     List<String> groups = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    List<Verkaufsanzeige> tasks = new ArrayList<>();
+    List<Verkaufsanzeige> anzeige = new ArrayList<>();
     
     @Column(name = "NAME", length = 64)
     @NotNull(message = "Der Vor- und Nachname darf nicht leer sein.")
@@ -125,12 +125,12 @@ public class User implements Serializable {
         this.username = id;
     }
 
-    public List<Verkaufsanzeige> getTasks() {
-        return tasks;
+    public List<Verkaufsanzeige> getAnzeige() {
+        return anzeige;
     }
 
-    public void setTasks(List<Verkaufsanzeige> tasks) {
-        this.tasks = tasks;
+    public void setAnzeige(List<Verkaufsanzeige> anzeige) {
+        this.anzeige = anzeige;
     }
     
     public String getName() {
