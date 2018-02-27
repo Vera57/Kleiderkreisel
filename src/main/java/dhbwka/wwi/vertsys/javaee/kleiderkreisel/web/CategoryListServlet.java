@@ -10,10 +10,10 @@
 package dhbwka.wwi.vertsys.javaee.kleiderkreisel.web;
 
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.CategoryBean;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.TaskBean;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.VerkaufsanzeigeBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.ValidationBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Category;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Task;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -37,7 +37,7 @@ public class CategoryListServlet extends HttpServlet {
     CategoryBean categoryBean;
     
     @EJB
-    TaskBean taskBean;
+    VerkaufsanzeigeBean VerkaufsanzeigeBean;
 
     @EJB
     ValidationBean validationBean;
@@ -150,9 +150,9 @@ public class CategoryListServlet extends HttpServlet {
             }
             
             // Bei allen betroffenen Aufgaben, den Bezug zur Kategorie aufheben
-            category.getTasks().forEach((Task task) -> {
+            category.getTasks().forEach((Verkaufsanzeige task) -> {
                 task.setCategory(null);
-                this.taskBean.update(task);
+                this.VerkaufsanzeigeBean.update(task);
             });
             
             // Und weg damit

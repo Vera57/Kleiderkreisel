@@ -12,7 +12,7 @@ package dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa;
 /**
  * Statuswerte einer Aufgabe.
  */
-public enum TaskStatus {
+public enum VerkaufsanzeigeStatus {
     OPEN, IN_PROGRESS, FINISHED, CANCELED, POSTPONED;
 
     /**

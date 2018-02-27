@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
  * Eine zu erledigende Aufgabe.
  */
 @Entity
-public class Task implements Serializable {
+public class Verkaufsanzeige implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,13 +61,13 @@ public class Task implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private TaskStatus status = TaskStatus.OPEN;
+    private VerkaufsanzeigeStatus status = VerkaufsanzeigeStatus.OPEN;
 
     //<editor-fold defaultstate="collapsed" desc="Konstruktoren">
-    public Task() {
+    public Verkaufsanzeige() {
     }
 
-    public Task(User owner, Category category, String shortText, String longText, Date dueDate, Time dueTime) {
+    public Verkaufsanzeige(User owner, Category category, String shortText, String longText, Date dueDate, Time dueTime) {
         this.owner = owner;
         this.category = category;
         this.shortText = shortText;
@@ -134,11 +134,11 @@ public class Task implements Serializable {
         this.dueTime = dueTime;
     }
 
-    public TaskStatus getStatus() {
+    public VerkaufsanzeigeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(TaskStatus status) {
+    public void setStatus(VerkaufsanzeigeStatus status) {
         this.status = status;
     }
     //</editor-fold>

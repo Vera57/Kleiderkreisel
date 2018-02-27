@@ -10,8 +10,8 @@
 package dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb;
 
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Category;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Task;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.TaskStatus;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.VerkaufsanzeigeStatus;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -24,18 +24,18 @@ import javax.persistence.criteria.Root;
  */
 @Stateless
 @RolesAllowed("kleiderkreisel-app-user")
-public class TaskBean extends EntityBean<Task, Long> { 
+public class VerkaufsanzeigeBean extends EntityBean<Verkaufsanzeige, Long> { 
    
-    public TaskBean() {
-        super(Task.class);
+    public VerkaufsanzeigeBean() {
+        super(Verkaufsanzeige.class);
     }
-    
+  
     /**
      * Alle Aufgaben eines Benutzers, nach Fälligkeit sortiert zurückliefern.
      * @param username Benutzername
      * @return Alle Aufgaben des Benutzers
      */
-    public List<Task> findByUsername(String username) {
+    public List<Verkaufsanzeige> findByUsername(String username) {
         return em.createQuery("SELECT t FROM Task t WHERE t.owner.username = :username ORDER BY t.dueDate, t.dueTime")
                  .setParameter("username", username)
                  .getResultList();
@@ -52,13 +52,13 @@ public class TaskBean extends EntityBean<Task, Long> {
      * @param status Status (optional)
      * @return Liste mit den gefundenen Aufgaben
      */
-    public List<Task> search(String search, Category category, TaskStatus status) {
+    public List<Verkaufsanzeige> search(String search, Category category, VerkaufsanzeigeStatus status) {
         // Hilfsobjekt zum Bauen des Query
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         
         // SELECT t FROM Task t
-        CriteriaQuery<Task> query = cb.createQuery(Task.class);
-        Root<Task> from = query.from(Task.class);
+        CriteriaQuery<Verkaufsanzeige> query = cb.createQuery(Verkaufsanzeige.class);
+        Root<Verkaufsanzeige> from = query.from(Verkaufsanzeige.class);
         query.select(from);
 
         // ORDER BY dueDate, dueTime

@@ -10,11 +10,11 @@
 package dhbwka.wwi.vertsys.javaee.kleiderkreisel.web;
 
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.CategoryBean;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.TaskBean;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.VerkaufsanzeigeBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.UserBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.ValidationBean;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Task;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.TaskStatus;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.VerkaufsanzeigeStatus;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
@@ -34,10 +34,10 @@ import javax.servlet.http.HttpSession;
  * Seite zum Anlegen oder Bearbeiten einer Aufgabe.
  */
 @WebServlet(urlPatterns = "/app/task/*")
-public class TaskEditServlet extends HttpServlet {
+public class VerkaufsanzeigeEditServlet extends HttpServlet {
 
     @EJB
-    TaskBean taskBean;
+    VerkaufsanzeigeBean VerkaufsanzeigeBean;
 
     @EJB
     CategoryBean categoryBean;
@@ -54,12 +54,12 @@ public class TaskEditServlet extends HttpServlet {
 
         // Verfügbare Kategorien und Stati für die Suchfelder ermitteln
         request.setAttribute("categories", this.categoryBean.findAllSorted());
-        request.setAttribute("statuses", TaskStatus.values());
+        request.setAttribute("statuses", VerkaufsanzeigeStatus.values());
 
         // Zu bearbeitende Aufgabe einlesen
         HttpSession session = request.getSession();
 
-        Task task = this.getRequestedTask(request);
+        Verkaufsanzeige task = this.getRequestedTask(request);
         request.setAttribute("edit", task.getId() != 0);
                                 
         if (session.getAttribute("task_form") == null) {
@@ -118,7 +118,7 @@ public class TaskEditServlet extends HttpServlet {
         String taskShortText = request.getParameter("task_short_text");
         String taskLongText = request.getParameter("task_long_text");
 
-        Task task = this.getRequestedTask(request);
+        Verkaufsanzeige task = this.getRequestedTask(request);
 
         if (taskCategory != null && !taskCategory.trim().isEmpty()) {
             try {
@@ -144,7 +144,7 @@ public class TaskEditServlet extends HttpServlet {
         }
 
         try {
-            task.setStatus(TaskStatus.valueOf(taskStatus));
+            task.setStatus(VerkaufsanzeigeStatus.valueOf(taskStatus));
         } catch (IllegalArgumentException ex) {
             errors.add("Der ausgewählte Status ist nicht vorhanden.");
         }
@@ -156,7 +156,7 @@ public class TaskEditServlet extends HttpServlet {
 
         // Datensatz speichern
         if (errors.isEmpty()) {
-            this.taskBean.update(task);
+            this.VerkaufsanzeigeBean.update(task);
         }
 
         // Weiter zur nächsten Seite
@@ -188,8 +188,8 @@ public class TaskEditServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Datensatz löschen
-        Task task = this.getRequestedTask(request);
-        this.taskBean.delete(task);
+        Verkaufsanzeige task = this.getRequestedTask(request);
+        this.VerkaufsanzeigeBean.delete(task);
 
         // Zurück zur Übersicht
         response.sendRedirect(WebUtils.appUrl(request, "/app/tasks/"));
@@ -203,9 +203,9 @@ public class TaskEditServlet extends HttpServlet {
      * @param request HTTP-Anfrage
      * @return Zu bearbeitende Aufgabe
      */
-    private Task getRequestedTask(HttpServletRequest request) {
+    private Verkaufsanzeige getRequestedTask(HttpServletRequest request) {
         // Zunächst davon ausgehen, dass ein neuer Satz angelegt werden soll
-        Task task = new Task();
+        Verkaufsanzeige task = new Verkaufsanzeige();
         task.setOwner(this.userBean.getCurrentUser());
         task.setDueDate(new Date(System.currentTimeMillis()));
         task.setDueTime(new Time(System.currentTimeMillis()));
@@ -225,7 +225,7 @@ public class TaskEditServlet extends HttpServlet {
 
         // Versuchen, den Datensatz mit der übergebenen ID zu finden
         try {
-            task = this.taskBean.findById(Long.parseLong(taskId));
+            task = this.VerkaufsanzeigeBean.findById(Long.parseLong(taskId));
         } catch (NumberFormatException ex) {
             // Ungültige oder keine ID in der URL enthalten
         }
@@ -243,7 +243,7 @@ public class TaskEditServlet extends HttpServlet {
      * @param task Die zu bearbeitende Aufgabe
      * @return Neues, gefülltes FormValues-Objekt
      */
-    private FormValues createTaskForm(Task task) {
+    private FormValues createTaskForm(Verkaufsanzeige task) {
         Map<String, String[]> values = new HashMap<>();
 
         values.put("task_owner", new String[]{
