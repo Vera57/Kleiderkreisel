@@ -13,11 +13,12 @@ import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.CategoryBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.VerkaufsanzeigeBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.UserBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.ValidationBean;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.AnzeigeArt;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.PreisArt;
+//import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.User;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.VerkaufsanzeigeStatus;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Seite zum Anlegen oder Bearbeiten einer Aufgabe.
  */
-@WebServlet(urlPatterns = "/app/task/*")
+@WebServlet(urlPatterns = "/app/anzeige/*")
 public class VerkaufsanzeigeEditServlet extends HttpServlet {
 
     @EJB
@@ -52,26 +53,25 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Verfügbare Kategorien und Stati für die Suchfelder ermitteln
+        // Verfügbare Kategorien für die Suchfelder ermitteln
         request.setAttribute("categories", this.categoryBean.findAllSorted());
-        request.setAttribute("statuses", VerkaufsanzeigeStatus.values());
 
         // Zu bearbeitende Aufgabe einlesen
         HttpSession session = request.getSession();
 
-        Verkaufsanzeige task = this.getRequestedTask(request);
-        request.setAttribute("edit", task.getId() != 0);
+        Verkaufsanzeige anzeige = this.getRequestedAnzeige(request);
+        request.setAttribute("edit", anzeige.getId() != 0);
                                 
-        if (session.getAttribute("task_form") == null) {
+        if (session.getAttribute("anzeige_form") == null) {
             // Keine Formulardaten mit fehlerhaften Daten in der Session,
             // daher Formulardaten aus dem Datenbankobjekt übernehmen
-            request.setAttribute("task_form", this.createTaskForm(task));
+            request.setAttribute("anzeige_form", this.createAnzeigeForm(anzeige));
         }
 
         // Anfrage an die JSP weiterleiten
-        request.getRequestDispatcher("/WEB-INF/app/task_edit.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/app/anzeige_edit.jsp").forward(request, response);
 
-        session.removeAttribute("task_form");
+        session.removeAttribute("anzeige_form");
     }
 
     @Override
@@ -89,10 +89,10 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
 
         switch (action) {
             case "save":
-                this.saveTask(request, response);
+                this.saveAnzeige(request, response);
                 break;
             case "delete":
-                this.deleteTask(request, response);
+                this.deleteAnzeige(request, response);
                 break;
         }
     }
@@ -105,64 +105,77 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    private void saveTask(HttpServletRequest request, HttpServletResponse response)
+    private void saveAnzeige(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         // Formulareingaben prüfen
         List<String> errors = new ArrayList<>();
+        
+        //String anzeigeErsteller=request.getParameter("anzeige_ersteller");
+        String anzeigeCategory = request.getParameter("anzeige_category");
+        String anzeigeArt=request.getParameter("anzeige_Art");
+        String anzeigeShortText = request.getParameter("anzeige_short_text");
+        String anzeigeLongText = request.getParameter("anzeige_long_text");
+        String anzeigeDueDate = request.getParameter("anzeige_due_date");
+        String anzeigePreis=request.getParameter("anzeigePreis");
+        String anzeigePreisArt=request.getParameter("anzeige_PreisArt");
+        
+                
+        Verkaufsanzeige anzeige = this.getRequestedAnzeige(request);
+        
+        /*try {
+            anzeige.setOwner(User.valueOf(anzeigeErsteller));
+        } catch (IllegalArgumentException ex) {
+            errors.add("Der ausgewählte Benutzer ist nicht vorhanden.");
+        }*/
 
-        String taskCategory = request.getParameter("task_category");
-        String taskDueDate = request.getParameter("task_due_date");
-        String taskDueTime = request.getParameter("task_due_time");
-        String taskStatus = request.getParameter("task_status");
-        String taskShortText = request.getParameter("task_short_text");
-        String taskLongText = request.getParameter("task_long_text");
-
-        Verkaufsanzeige task = this.getRequestedTask(request);
-
-        if (taskCategory != null && !taskCategory.trim().isEmpty()) {
+        if (anzeigeCategory != null && !anzeigeCategory.trim().isEmpty()) {
             try {
-                task.setCategory(this.categoryBean.findById(Long.parseLong(taskCategory)));
+                anzeige.setCategory(this.categoryBean.findById(Long.parseLong(anzeigeCategory)));
             } catch (NumberFormatException ex) {
                 // Ungültige oder keine ID mitgegeben
             }
         }
 
-        Date dueDate = WebUtils.parseDate(taskDueDate);
-        Time dueTime = WebUtils.parseTime(taskDueTime);
+        Date dueDate = WebUtils.parseDate(anzeigeDueDate);
+       
 
         if (dueDate != null) {
-            task.setDueDate(dueDate);
+            anzeige.setDueDate(dueDate);
         } else {
             errors.add("Das Datum muss dem Format dd.mm.yyyy entsprechen.");
         }
 
-        if (dueTime != null) {
-            task.setDueTime(dueTime);
-        } else {
-            errors.add("Die Uhrzeit muss dem Format hh:mm:ss entsprechen.");
+        anzeige.setShortText(anzeigeShortText);
+        anzeige.setLongText(anzeigeLongText);
+        
+        long preis=new Long(anzeigePreis);
+        if (anzeigePreis!=null){
+            anzeige.setPreis(preis);
         }
-
+        
         try {
-            task.setStatus(VerkaufsanzeigeStatus.valueOf(taskStatus));
+            anzeige.setPreisArt(PreisArt.valueOf(anzeigePreisArt));
         } catch (IllegalArgumentException ex) {
-            errors.add("Der ausgewählte Status ist nicht vorhanden.");
+            errors.add("Die ausgewählte Art des Preises ist nicht vorhanden.");
         }
-
-        task.setShortText(taskShortText);
-        task.setLongText(taskLongText);
-
-        this.validationBean.validate(task, errors);
+        
+        try {
+            anzeige.setAnzeigeArt(AnzeigeArt.valueOf(anzeigeArt));
+        } catch (IllegalArgumentException ex) {
+            errors.add("Die ausgewählte Art der Anzeige ist nicht vorhanden.");
+        }
+        this.validationBean.validate(anzeige, errors);
 
         // Datensatz speichern
         if (errors.isEmpty()) {
-            this.VerkaufsanzeigeBean.update(task);
+            this.VerkaufsanzeigeBean.update(anzeige);
         }
 
         // Weiter zur nächsten Seite
         if (errors.isEmpty()) {
             // Keine Fehler: Startseite aufrufen
-            response.sendRedirect(WebUtils.appUrl(request, "/app/tasks/"));
+            response.sendRedirect(WebUtils.appUrl(request, "/app/anzeige/"));
         } else {
             // Fehler: Formuler erneut anzeigen
             FormValues formValues = new FormValues();
@@ -170,7 +183,7 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
             formValues.setErrors(errors);
 
             HttpSession session = request.getSession();
-            session.setAttribute("task_form", formValues);
+            session.setAttribute("anzeige_form", formValues);
 
             response.sendRedirect(request.getRequestURI());
         }
@@ -184,15 +197,15 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    private void deleteTask(HttpServletRequest request, HttpServletResponse response)
+    private void deleteAnzeige(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         // Datensatz löschen
-        Verkaufsanzeige task = this.getRequestedTask(request);
-        this.VerkaufsanzeigeBean.delete(task);
+        Verkaufsanzeige anzeige = this.getRequestedAnzeige(request);
+        this.VerkaufsanzeigeBean.delete(anzeige);
 
         // Zurück zur Übersicht
-        response.sendRedirect(WebUtils.appUrl(request, "/app/tasks/"));
+        response.sendRedirect(WebUtils.appUrl(request, "/app/anzeige/"));
     }
 
     /**
@@ -203,34 +216,33 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
      * @param request HTTP-Anfrage
      * @return Zu bearbeitende Aufgabe
      */
-    private Verkaufsanzeige getRequestedTask(HttpServletRequest request) {
+    private Verkaufsanzeige getRequestedAnzeige(HttpServletRequest request) {
         // Zunächst davon ausgehen, dass ein neuer Satz angelegt werden soll
-        Verkaufsanzeige task = new Verkaufsanzeige();
-        task.setOwner(this.userBean.getCurrentUser());
-        task.setDueDate(new Date(System.currentTimeMillis()));
-        task.setDueTime(new Time(System.currentTimeMillis()));
+        Verkaufsanzeige anzeige = new Verkaufsanzeige();
+        anzeige.setOwner(this.userBean.getCurrentUser());
+        anzeige.setDueDate(new Date(System.currentTimeMillis()));
 
         // ID aus der URL herausschneiden
-        String taskId = request.getPathInfo();
+        String anzeigeId = request.getPathInfo();
 
-        if (taskId == null) {
-            taskId = "";
+        if (anzeigeId == null) {
+            anzeigeId = "";
         }
 
-        taskId = taskId.substring(1);
+        anzeigeId = anzeigeId.substring(1);
 
-        if (taskId.endsWith("/")) {
-            taskId = taskId.substring(0, taskId.length() - 1);
+        if (anzeigeId.endsWith("/")) {
+            anzeigeId = anzeigeId.substring(0, anzeigeId.length() - 1);
         }
 
         // Versuchen, den Datensatz mit der übergebenen ID zu finden
         try {
-            task = this.VerkaufsanzeigeBean.findById(Long.parseLong(taskId));
+            anzeige = this.VerkaufsanzeigeBean.findById(Long.parseLong(anzeigeId));
         } catch (NumberFormatException ex) {
             // Ungültige oder keine ID in der URL enthalten
         }
 
-        return task;
+        return anzeige;
     }
 
     /**
@@ -240,40 +252,32 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
      * Formular aus der Entity oder aus einer vorherigen Formulareingabe
      * stammen.
      *
-     * @param task Die zu bearbeitende Aufgabe
+     * @param anzeige Die zu bearbeitende Aufgabe
      * @return Neues, gefülltes FormValues-Objekt
      */
-    private FormValues createTaskForm(Verkaufsanzeige task) {
+    private FormValues createAnzeigeForm(Verkaufsanzeige anzeige) {
         Map<String, String[]> values = new HashMap<>();
 
-        values.put("task_owner", new String[]{
-            task.getOwner().getUsername()
+        values.put("anzeige_owner", new String[]{
+            anzeige.getOwner().getUsername()
         });
 
-        if (task.getCategory() != null) {
-            values.put("task_category", new String[]{
-                task.getCategory().toString()
+        if (anzeige.getCategory() != null) {
+            values.put("anzeige_category", new String[]{
+                anzeige.getCategory().toString()
             });
         }
 
-        values.put("task_due_date", new String[]{
-            WebUtils.formatDate(task.getDueDate())
+        values.put("anzeige_due_date", new String[]{
+            WebUtils.formatDate(anzeige.getDueDate())
         });
 
-        values.put("task_due_time", new String[]{
-            WebUtils.formatTime(task.getDueTime())
+        values.put("anzeige_short_text", new String[]{
+            anzeige.getShortText()
         });
 
-        values.put("task_status", new String[]{
-            task.getStatus().toString()
-        });
-
-        values.put("task_short_text", new String[]{
-            task.getShortText()
-        });
-
-        values.put("task_long_text", new String[]{
-            task.getLongText()
+        values.put("anzeige_long_text", new String[]{
+            anzeige.getLongText()
         });
 
         FormValues formValues = new FormValues();

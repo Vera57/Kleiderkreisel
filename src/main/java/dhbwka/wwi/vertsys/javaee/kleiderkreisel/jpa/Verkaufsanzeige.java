@@ -11,7 +11,7 @@ package dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.sql.Time;
+//import java.sql.Time;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,21 +34,31 @@ public class Verkaufsanzeige implements Serializable {
 
     @Id
     @GeneratedValue(generator = "task_ids")
-    @TableGenerator(name = "task_ids", initialValue = 0, allocationSize = 50)
+    @TableGenerator(name = "task_ids", initialValue = 0, allocationSize = 5000)
     private long id;
 
     @ManyToOne
-    @NotNull(message = "Die Aufgabe muss einem Benutzer geordnet werden.")
+    @NotNull(message = "Die Anzeige muss einem Benutzer zugeordnet werden.")
     private User owner;
 
     @ManyToOne
     private Category category;
+    
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private AnzeigeArt anzeigeArt;
+    
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private PreisArt preisArt;
 
     @Column(length = 50)
     @NotNull(message = "Die Bezeichnung darf nicht leer sein.")
     @Size(min = 1, max = 50, message = "Die Bezeichnung muss zwischen ein und 50 Zeichen lang sein.")
     private String shortText;
 
+    private long preis;
+    
     @Lob
     @NotNull
     private String longText;
@@ -56,24 +66,20 @@ public class Verkaufsanzeige implements Serializable {
     @NotNull(message = "Das Datum darf nicht leer sein.")
     private Date dueDate;
 
-    @NotNull(message = "Die Uhrzeit darf nicht leer sein.")
-    private Time dueTime;
-
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private VerkaufsanzeigeStatus status = VerkaufsanzeigeStatus.OPEN;
 
     //<editor-fold defaultstate="collapsed" desc="Konstruktoren">
     public Verkaufsanzeige() {
     }
 
-    public Verkaufsanzeige(User owner, Category category, String shortText, String longText, Date dueDate, Time dueTime) {
+    public Verkaufsanzeige(User owner, Category category, AnzeigeArt anzeigeArt, String shortText, String longText, Date dueDate, long preis, PreisArt preisArt) {
         this.owner = owner;
         this.category = category;
+        this.anzeigeArt=anzeigeArt;
         this.shortText = shortText;
         this.longText = longText;
         this.dueDate = dueDate;
-        this.dueTime = dueTime;
+        this.preis=preis;
+        this.preisArt=preisArt;
     }
     //</editor-fold>
 
@@ -126,21 +132,31 @@ public class Verkaufsanzeige implements Serializable {
         this.dueDate = dueDate;
     }
 
-    public Time getDueTime() {
-        return dueTime;
+    public AnzeigeArt getAnzeigeArt() {
+        return anzeigeArt;
     }
 
-    public void setDueTime(Time dueTime) {
-        this.dueTime = dueTime;
+    public void setAnzeigeArt(AnzeigeArt anzeigeArt) {
+        this.anzeigeArt = anzeigeArt;
+    }
+    
+    public PreisArt getPreisArt(){
+        return preisArt;
+    }
+    
+    public void setPreisArt(PreisArt preisArt){
+        this.preisArt=preisArt;
+    }
+    
+    public long getPreis(){
+        return preis;
+    }
+    
+    public void setPreis(long preis){
+        this.preis=preis;
     }
 
-    public VerkaufsanzeigeStatus getStatus() {
-        return status;
-    }
 
-    public void setStatus(VerkaufsanzeigeStatus status) {
-        this.status = status;
-    }
     //</editor-fold>
 
 }

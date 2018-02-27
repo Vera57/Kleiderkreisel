@@ -13,7 +13,6 @@ import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.CategoryBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.VerkaufsanzeigeBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Category;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.VerkaufsanzeigeStatus;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -24,10 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet für die Startseite bzw. jede Seite, die eine Liste der Aufgaben
+ * Servlet für die Startseite bzw. jede Seite, die eine Liste der Anzeige
  * zeigt.
  */
-@WebServlet(urlPatterns = {"/app/tasks/"})
+@WebServlet(urlPatterns = {"/app/anzeige/"})
 public class VerkaufsanzeigeListServlet extends HttpServlet {
 
     @EJB
@@ -42,8 +41,7 @@ public class VerkaufsanzeigeListServlet extends HttpServlet {
 
         // Verfügbare Kategorien und Stati für die Suchfelder ermitteln
         request.setAttribute("categories", this.categoryBean.findAllSorted());
-        request.setAttribute("statuses", VerkaufsanzeigeStatus.values());
-
+        
         // Suchparameter aus der URL auslesen
         String searchText = request.getParameter("search_text");
         String searchCategory = request.getParameter("search_category");
@@ -51,7 +49,6 @@ public class VerkaufsanzeigeListServlet extends HttpServlet {
 
         // Anzuzeigende Aufgaben suchen
         Category category = null;
-        VerkaufsanzeigeStatus status = null;
 
         if (searchCategory != null) {
             try {
@@ -61,19 +58,10 @@ public class VerkaufsanzeigeListServlet extends HttpServlet {
             }
         }
 
-        if (searchStatus != null) {
-            try {
-                status = VerkaufsanzeigeStatus.valueOf(searchStatus);
-            } catch (IllegalArgumentException ex) {
-                status = null;
-            }
-
-        }
-
-        List<Verkaufsanzeige> tasks = this.VerkaufsanzeigeBean.search(searchText, category, status);
-        request.setAttribute("tasks", tasks);
+        List<Verkaufsanzeige> anzeige = this.VerkaufsanzeigeBean.search(searchText, category);
+        request.setAttribute("anzeige", anzeige);
 
         // Anfrage an die JSP weiterleiten
-        request.getRequestDispatcher("/WEB-INF/app/task_list.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/app/anzeige_list.jsp").forward(request, response);
     }
 }

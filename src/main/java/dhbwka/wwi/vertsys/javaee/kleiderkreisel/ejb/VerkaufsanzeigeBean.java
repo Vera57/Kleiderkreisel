@@ -11,7 +11,6 @@ package dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb;
 
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Category;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.VerkaufsanzeigeStatus;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -36,7 +35,7 @@ public class VerkaufsanzeigeBean extends EntityBean<Verkaufsanzeige, Long> {
      * @return Alle Aufgaben des Benutzers
      */
     public List<Verkaufsanzeige> findByUsername(String username) {
-        return em.createQuery("SELECT t FROM Task t WHERE t.owner.username = :username ORDER BY t.dueDate, t.dueTime")
+        return em.createQuery("SELECT a FROM Verkaufsanzeige a WHERE a.owner.username = :username ORDER BY a.dueDate")
                  .setParameter("username", username)
                  .getResultList();
     }
@@ -49,14 +48,13 @@ public class VerkaufsanzeigeBean extends EntityBean<Verkaufsanzeige, Long> {
      * 
      * @param search In der Kurzbeschreibung enthaltener Text (optional)
      * @param category Kategorie (optional)
-     * @param status Status (optional)
      * @return Liste mit den gefundenen Aufgaben
      */
-    public List<Verkaufsanzeige> search(String search, Category category, VerkaufsanzeigeStatus status) {
+    public List<Verkaufsanzeige> search(String search, Category category) {
         // Hilfsobjekt zum Bauen des Query
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         
-        // SELECT t FROM Task t
+        // SELECT t FROM Anzeige t
         CriteriaQuery<Verkaufsanzeige> query = cb.createQuery(Verkaufsanzeige.class);
         Root<Verkaufsanzeige> from = query.from(Verkaufsanzeige.class);
         query.select(from);
@@ -72,11 +70,6 @@ public class VerkaufsanzeigeBean extends EntityBean<Verkaufsanzeige, Long> {
         // WHERE t.category = :category
         if (category != null) {
             query.where(cb.equal(from.get("category"), category));
-        }
-        
-        // WHERE t.status = :status
-        if (status != null) {
-            query.where(cb.equal(from.get("status"), status));
         }
         
         return em.createQuery(query).getResultList();
