@@ -15,4 +15,15 @@ package dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa;
  */
 public enum PreisArt {
     FESTPREIS, VERHANDLUNGSBASIS;
+    
+    public String getLabel() {
+        switch(this) {
+            case FESTPREIS:
+            return "Festpreis";
+            case VERHANDLUNGSBASIS:
+            return "Verhandlungsbasis";
+            default:
+                return this.toString();
+        }
+    }
 }

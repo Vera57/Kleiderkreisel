@@ -13,8 +13,6 @@ import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.CategoryBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.VerkaufsanzeigeBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.UserBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.ValidationBean;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.AnzeigeArt;
-import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.PreisArt;
 //import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.User;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
 import java.io.IOException;
@@ -110,25 +108,18 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
 
         // Formulareingaben prüfen
         List<String> errors = new ArrayList<>();
-        
-        String anzeigeErsteller=request.getParameter("anzeige_ersteller");
+       
         String anzeigeCategory = request.getParameter("anzeige_category");
-        String anzeigeArt=request.getParameter("anzeige_Art");
-        String anzeigehortText = request.getParameter("anzeige_short_text");
+        String anzeigeArt=request.getParameter("anzeige_typ");
+        String anzeigeShortText = request.getParameter("anzeige_short_text");
         String anzeigeLongText = request.getParameter("anzeige_long_text");
-        String anzeigeDueDate = request.getParameter("anzeige_due_date");
-        String anzeigePreis=request.getParameter("anzeigePreis");
-        String anzeigePreisArt=request.getParameter("anzeige_PreisArt");
+        String anzeigePreisart=request.getParameter("anzeige_preisart");
+        String anzeigePreis=request.getParameter("anzeige_preis");
         
                 
         Verkaufsanzeige anzeige = this.getRequestedAnzeige(request);
         
-        try {
-            anzeige.getOwner().getUsername();
-        } catch (IllegalArgumentException ex) {
-            errors.add("Der ausgewählte Benutzer ist nicht vorhanden.");
-        }
-
+        
         if (anzeigeCategory != null && !anzeigeCategory.trim().isEmpty()) {
             try {
                 anzeige.setCategory(this.categoryBean.findById(Long.parseLong(anzeigeCategory)));
@@ -136,26 +127,15 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
                 // Ungültige oder keine ID mitgegeben
             }
         }
+        
 
-        Date dueDate = WebUtils.parseDate(anzeigeDueDate);
-       
-
-        if (dueDate != null) {
-            anzeige.setDueDate(dueDate);
-        } else {
-            errors.add("Das Datum muss dem Format dd.mm.yyyy entsprechen.");
-        }
-
-        anzeige.setShortText(anzeigehortText);
+        anzeige.setShortText(anzeigeShortText);
         anzeige.setLongText(anzeigeLongText);
+        anzeige.setPreis(anzeigePreis);
         
-        long preis=new Long(anzeigePreis);
-        if (anzeigePreis!=null){
-            anzeige.setPreis(preis);
-        }
         
-        try {
-            anzeige.setPreisArt(PreisArt.valueOf(anzeigePreisArt));
+       /* try {
+            anzeige.setPreisArt(PreisArt.valueOf(anzeigePreisart));
         } catch (IllegalArgumentException ex) {
             errors.add("Die ausgewählte Art des Preises ist nicht vorhanden.");
         }
@@ -165,8 +145,10 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
         } catch (IllegalArgumentException ex) {
             errors.add("Die ausgewählte Art der Anzeige ist nicht vorhanden.");
         }
-        this.validationBean.validate(anzeige, errors);
+        this.validationBean.validate(anzeige, errors);*/
 
+        this.validationBean.validate(anzeige, errors);
+        
         // Datensatz speichern
         if (errors.isEmpty()) {
             this.VerkaufsanzeigeBean.update(anzeige);
@@ -283,7 +265,7 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
         });
         
         values.put("anzeige_preis", new String[]{
-            Long.toString(anzeige.getPreis())
+            anzeige.getPreis()
         });
         
         values.put("anzeige_preisArt",new String[]{

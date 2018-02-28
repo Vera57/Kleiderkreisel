@@ -15,7 +15,7 @@
 
 <template:base>
     <jsp:attribute name="title">
-        Kategorien bearbeiten
+        Benutzer bearbeiten
     </jsp:attribute>
 
     <jsp:attribute name="head">
@@ -28,7 +28,7 @@
         </div>
     </jsp:attribute>
 
-    <jsp:attribute name="content">
+  <jsp:attribute name="content">
         <form method="post" class="stacked">
             <%-- CSRF-Token --%>
             <input type="hidden" name="csrf_token" value="${csrf_token}">

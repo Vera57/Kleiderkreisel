@@ -15,4 +15,14 @@ package dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa;
  */
 public enum AnzeigeArt {
     BIETE,SUCHE;
+        public String getLabel() {
+        switch(this) {
+            case BIETE:
+            return "Biete";
+            case SUCHE:
+            return "Suche";
+            default:
+                return this.toString();
+        }
+}
 }

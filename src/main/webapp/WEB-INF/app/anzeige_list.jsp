@@ -30,6 +30,10 @@
         <div class="menuitem">
             <a href="<c:url value="/app/categories/"/>">Kategorien bearbeiten</a>
         </div>
+        
+        <div class="menuitem">
+            <a href="<c:url value="/app/benutzerbearbeiten/"/>">Benutzer bearbeiten</a>
+        </div>
     </jsp:attribute>
 
     <jsp:attribute name="content">
@@ -48,7 +52,7 @@
             </select>
 
             <select name="search_status">
-                <option value="">Alle Stati</option>
+                <option value="">Alle Angebotsarten</option>
 
                 <c:forEach items="${statuses}" var="status">
                     <option value="${status}" ${param.search_status == status ? 'selected' : ''}>
@@ -77,9 +81,11 @@
                         <tr>
                             <th>Bezeichnung</th>
                             <th>Kategorie</th>
-                            <th>Eigentümer</th>
-                            <th>Status</th>
-                            <th>Fällig am</th>
+                            <th>Benutzer</th>
+                            <th>Angebotstyp</th>
+                            <th>Preis</th>
+                            <th>Preistyp</th>
+                            <th>Datum</th>
                         </tr>
                     </thead>
                     <c:forEach items="${anzeige}" var="anzeige">
@@ -96,11 +102,17 @@
                                 <c:out value="${anzeige.owner.username}"/>
                             </td>
                             <td>
-                                <c:out value="${anzeige.status.label}"/>
+                                <c:out value="${anzeige.anzeigeArt.label}"/>
+                            </td>
+                            <td>
+                                <c:out value="${anzeige.preis}"/>
+                            </td>
+                            <td>
+                                <c:out value="${anzeige.preisArt.label}"/>
                             </td>
                             <td>
                                 <c:out value="${utils.formatDate(anzeige.dueDate)}"/>
-                                <c:out value="${utils.formatTime(anzeige.dueTime)}"/>
+                              
                             </td>
                         </tr>
                     </c:forEach>

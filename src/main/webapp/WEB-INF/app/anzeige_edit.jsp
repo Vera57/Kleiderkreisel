@@ -42,11 +42,6 @@
                 <input type="hidden" name="csrf_token" value="${csrf_token}">
 
                 <%-- Eingabefelder --%>
-                <label for="anzeige_owner">Eigentümer:</label>
-                <div class="side-by-side">
-                    <input type="text" name="anzeige_owner" value="${anzeige_form.values["anzeige_owner"][0]}" readonly="readonly">
-                </div>
-
                 <label for="anzeige_category">Kategorie:</label>
                 <div class="side-by-side">
                     <select name="anzeige_category">
@@ -59,27 +54,12 @@
                         </c:forEach>
                     </select>
                 </div>
-
-                <label for="anzeige_due_date">
-                    Fällig am:
-                    <span class="required">*</span>
-                </label>
+                
+                <label for="anzeige_typ">Art des Angebots:</label>
                 <div class="side-by-side">
-                    <input type="text" name="anzeige_due_date" value="${anzeige_form.values["anzeige_due_date"][0]}">
-                    <input type="text" name="anzeige_due_time" value="${anzeige_form.values["anzeige_due_time"][0]}">
-                </div>
-
-                <label for="anzeige_status">
-                    Status:
-                    <span class="required">*</span>
-                </label>
-                <div class="side-by-side margin">
-                    <select name="anzeige_status">
-                        <c:forEach items="${statuses}" var="status">
-                            <option value="${status}" ${anzeige_form.values["anzeige_status"][0] == status ? 'selected' : ''}>
-                                <c:out value="${status.label}"/>
-                            </option>
-                        </c:forEach>
+                    <select name="anzeige_typ">
+                        <option value="SUCHE">Suche</option>
+                        <option value="BIETE">Biete</option>
                     </select>
                 </div>
 
@@ -96,6 +76,15 @@
                 </label>
                 <div class="side-by-side">
                     <textarea name="anzeige_long_text"><c:out value="${anzeige_form.values['anzeige_long_text'][0]}"/></textarea>
+                </div>
+                
+                <label for="anzeige_preis">Preis:</label>
+                <div class="side-by-side">
+                    <select name="anzeige_preisart">
+                        <option value="VERHANDLUNGSBASIS">Verhandlungsbasis</option>
+                        <option value="FESTPREIS">Festpreis</option>
+                    </select>
+                    <input type="text" name="anzeige_preis" value="${anzeige_form.values["anzeige_preis"][0]}">
                 </div>
 
                 <%-- Button zum Abschicken --%>
