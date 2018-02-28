@@ -54,9 +54,9 @@
             <select name="search_status">
                 <option value="">Alle Angebotsarten</option>
 
-                <c:forEach items="${statuses}" var="status">
-                    <option value="${status}" ${param.search_status == status ? 'selected' : ''}>
-                        <c:out value="${status.label}"/>
+                <c:forEach items="${anzeigeArten}" var="status">
+                    <option value="${anzeigeArt}" ${param.search_anzeigeArt == anzeigeArt ? 'selected' : ''}>
+                        <c:out value="${anzeigeArt.name}"/>
                     </option>
                 </c:forEach>
             </select>
@@ -102,13 +102,13 @@
                                 <c:out value="${anzeige.owner.username}"/>
                             </td>
                             <td>
-                                <c:out value="${anzeige.anzeigeArt}"/>
+                                <c:out value="${anzeige.anzeigeArt.label}"/>
                             </td>
                             <td>
                                 <c:out value="${anzeige.preis}"/>
                             </td>
                             <td>
-                                <c:out value="${anzeige.preisArt}"/>
+                                <c:out value="${anzeige.preisArt.label}"/>
                             </td>
                             <td>
                                 <c:out value="${utils.formatDate(anzeige.dueDate)}"/>

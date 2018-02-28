@@ -13,6 +13,9 @@ import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.CategoryBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.VerkaufsanzeigeBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.UserBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.ValidationBean;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.AnzeigeArt;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.PreisArt;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.User;
 //import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.User;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
 import java.io.IOException;
@@ -50,6 +53,12 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+         User user = this.userBean.getCurrentUser();
+         Date datum =new Date(System.currentTimeMillis());
+         
+         
+         
 
         // Verfügbare Kategorien für die Suchfelder ermitteln
         request.setAttribute("categories", this.categoryBean.findAllSorted());
@@ -58,8 +67,19 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         Verkaufsanzeige anzeige = this.getRequestedAnzeige(request);
+        
+        request.setAttribute("anzeige_form", this.createAnzeigeForm(anzeige));
+        
         request.setAttribute("edit", anzeige.getId() != 0);
-                                
+        if(anzeige.getId() != 0){
+            request.setAttribute("datum", datum);
+            
+        }
+        else{
+            request.setAttribute("datum", anzeige.getDueDate());
+        }
+        
+        request.setAttribute("owner", anzeige.getOwner());
         /*if (session.getAttribute("anzeige_form") == null) {
             // Keine Formulardaten mit fehlerhaften Daten in der Session,
             // daher Formulardaten aus dem Datenbankobjekt übernehmen
@@ -128,25 +148,26 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
             }
         }
         
-
+        if (anzeigeArt != null && !anzeigeArt.trim().isEmpty()) {
+            try {
+                anzeige.setAnzeigeArt(AnzeigeArt.valueOf(anzeigeArt));
+            } catch (NumberFormatException ex) {
+                // Ungültige oder keine ID mitgegeben
+            }
+        }
+        
+        if (anzeigePreisart != null && !anzeigePreisart.trim().isEmpty()) {
+            try {
+                anzeige.setPreisArt(PreisArt.valueOf(anzeigePreisart));
+            } catch (NumberFormatException ex) {
+                // Ungültige oder keine ID mitgegeben
+            }
+        }
+   
         anzeige.setShortText(anzeigeShortText);
         anzeige.setLongText(anzeigeLongText);
         anzeige.setPreis(anzeigePreis);
         
-        
-       /* try {
-            anzeige.setPreisArt(PreisArt.valueOf(anzeigePreisart));
-        } catch (IllegalArgumentException ex) {
-            errors.add("Die ausgewählte Art des Preises ist nicht vorhanden.");
-        }
-        
-        try {
-            anzeige.setAnzeigeArt(AnzeigeArt.valueOf(anzeigeArt));
-        } catch (IllegalArgumentException ex) {
-            errors.add("Die ausgewählte Art der Anzeige ist nicht vorhanden.");
-        }
-        this.validationBean.validate(anzeige, errors);*/
-
         this.validationBean.validate(anzeige, errors);
         
         // Datensatz speichern
@@ -240,37 +261,36 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
     private FormValues createAnzeigeForm(Verkaufsanzeige anzeige) {
         Map<String, String[]> values = new HashMap<>();
 
-        values.put("anzeige_owner", new String[]{
-            anzeige.getOwner().getUsername()
-        });
-
         if (anzeige.getCategory() != null) {
             values.put("anzeige_category", new String[]{
                 anzeige.getCategory().toString()
             });
         }
         
-      /*
+        if (anzeige.getAnzeigeArt() != null) {
+            values.put("anzeige_typ", new String[]{
+                anzeige.getAnzeigeArt().toString()
+            });
+        }
 
         values.put("anzeige_short_text", new String[]{
             anzeige.getShortText()
-        });*/
+        });
 
         values.put("anzeige_long_text", new String[]{
             anzeige.getLongText()
         });
         
-        values.put("anzeige_due_date", new String[]{
-            WebUtils.formatDate(anzeige.getDueDate())
-        });
+        if (anzeige.getPreisArt() != null) {
+            values.put("anzeige_preisart", new String[]{
+                anzeige.getPreisArt().toString()
+            });
+        }
         
         values.put("anzeige_preis", new String[]{
             anzeige.getPreis()
         });
         
-        values.put("anzeige_preisArt",new String[]{
-            anzeige.getPreisArt().toString()
-        });
 
         FormValues formValues = new FormValues();
         formValues.setValues(values);

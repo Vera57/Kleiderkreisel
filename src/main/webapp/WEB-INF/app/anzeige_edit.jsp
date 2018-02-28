@@ -101,9 +101,15 @@
                     </c:if>
                 </div>
                 
-                <%-- Datum --%>
+                <%-- Datum und Anbieter --%>
                 <h4>Angelegt am:</h4>
+                ${datum}
+                
                 <h4>Anbieter:</h4>
+                ${owner.name} <br>
+                ${owner.anschrift} <br>
+                ${owner.plz}
+                ${owner.ort}
             </div>
           
             <%-- Fehlermeldungen --%>
