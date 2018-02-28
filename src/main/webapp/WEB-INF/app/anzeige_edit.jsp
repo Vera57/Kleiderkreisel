@@ -99,7 +99,8 @@
                             Löschen
                         </button>
                     </c:if>
-                
+                </div>
+                <div>
                 <%-- Datum und Anbieter --%>
                 <h4>Angelegt am:</h4>
                 ${datum}
@@ -109,7 +110,7 @@
                 ${owner.anschrift} <br>
                 ${owner.plz}
                 ${owner.ort}
-            </div>
+                </div>
           
             <%-- Fehlermeldungen --%>
             <c:if test="${!empty anzeige_form.errors}">

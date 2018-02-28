@@ -11,6 +11,7 @@ package dhbwka.wwi.vertsys.javaee.kleiderkreisel.web;
 
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.CategoryBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.VerkaufsanzeigeBean;
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.AnzeigeArt;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Category;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class VerkaufsanzeigeListServlet extends HttpServlet {
         // Suchparameter aus der URL auslesen
         String searchText = request.getParameter("search_text");
         String searchCategory = request.getParameter("search_category");
+        String searchStatus = request.getParameter("search_status");
 
         // Anzuzeigende Aufgaben suchen
         Category category = null;
@@ -57,7 +59,7 @@ public class VerkaufsanzeigeListServlet extends HttpServlet {
             }
         }
 
-        List<Verkaufsanzeige> anzeige = this.VerkaufsanzeigeBean.search(searchText, category);
+        List<Verkaufsanzeige> anzeige = this.VerkaufsanzeigeBean.search(searchText, category, searchStatus);
         request.setAttribute("anzeige", anzeige);
 
         // Anfrage an die JSP weiterleiten

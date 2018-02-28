@@ -52,9 +52,9 @@
             </select>
 
             <select name="search_status">
-                <option value="">Alle Angebotsarten</option>
-                <option value="biete">Biete</option>
-                <option value="suche">Suche</option>
+                <option value="" ${param.search_status == '' ? 'selected' : ''}>Alle Angebotsarten</option>
+                <option value="Biete" ${param.search_status == 'Biete' ? 'selected' : ''}>Biete</option>
+                <option value="Suche" ${param.search_status == 'Suche' ? 'selected' : ''}>Suche</option>
             </select>
 
             <button class="icon-search" type="submit">

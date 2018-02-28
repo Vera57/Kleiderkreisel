@@ -9,6 +9,7 @@
  */
 package dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb;
 
+import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.AnzeigeArt;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Category;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
 import java.util.List;
@@ -50,7 +51,7 @@ public class VerkaufsanzeigeBean extends EntityBean<Verkaufsanzeige, Long> {
      * @param category Kategorie (optional)
      * @return Liste mit den gefundenen Aufgaben
      */
-    public List<Verkaufsanzeige> search(String search, Category category) {
+    public List<Verkaufsanzeige> search(String search, Category category, String searchStatus) {
         // Hilfsobjekt zum Bauen des Query
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         
@@ -70,6 +71,10 @@ public class VerkaufsanzeigeBean extends EntityBean<Verkaufsanzeige, Long> {
         // WHERE t.category = :category
         if (category != null) {
             query.where(cb.equal(from.get("category"), category));
+        }
+        
+        if (searchStatus != null && !searchStatus.trim().isEmpty()) {
+            query.where(cb.equal(from.get("anzeigeArt"), ((searchStatus.equalsIgnoreCase("Biete")) ? AnzeigeArt.BIETE : AnzeigeArt.SUCHE)));
         }
         
         return em.createQuery(query).getResultList();
