@@ -19,7 +19,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="head">
-        <link rel="stylesheet" href="<c:url value="/css/category_list.css"/>" />
+        <link rel="stylesheet" href="<c:url value="/css/user_edit.css"/>" />
     </jsp:attribute>
 
     <jsp:attribute name="menu">
@@ -34,67 +34,66 @@
                 <div class="column">
                     <%-- CSRF-Token --%>
                     <input type="hidden" name="csrf_token" value="${csrf_token}">
-
                     <%-- Eingabefelder --%>
                     <h1>Logindaten ändern</h1>
-                    <label for="signup_username">
+                    <label for="user_username">
                         Benutzername:
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_username" value="${signup_form.values["signup_username"][0]}">
+                        <input type="text" name="user_username" value="${task_form.values["user_username"][0]}">
                     </div>
                     
                     <h1>Anschrift ändern</h1>
                     
-                    <label for="signup_name">
+                    <label for="user_name">
                         Vorname und Nachname:
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_name" value="${signup_form.values["signup_name"][0]}">
+                        <input type="text" name="user_name" value="${task_form.values["user_name"][0]}">
                     </div>
                     
-                    <label for="signup_anschrift">
+                    <label for="user_anschrift">
                         Straße und Hausnummer:
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_anschrift" value="${signup_form.values["signup_anschrift"][0]}">
+                        <input type="text" name="user_anschrift" value="${task_form.values["user_anschrift"][0]}">
                     </div>
                     
-                    <label for="signup_plz">
+                    <label for="user_plz">
                         Postleitzahl:
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_plz" value="${signup_form.values["signup_plz"][0]}">
+                        <input type="text" name="user_plz" value="${task_form.values["user_plz"][0]}">
                     </div>
                     
-                    <label for="signup_ort">
+                    <label for="user_ort">
                         Ort:
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_ort" value="${signup_form.values["signup_ort"][0]}">
+                        <input type="text" name="user_ort" value="${task_form.values["user_ort"][0]}">
                     </div>
                     
                     <h1>Kontaktdaten ändern</h1>
                     
-                    <label for="signup_telefon">
+                    <label for="user_telefon">
                         Telefonnummer:
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_telefon" value="${signup_form.values["signup_telefon"][0]}">
+                        <input type="text" name="user_telefon" value="${task_form.values["user_telefon"][0]}">
                     </div>
                     
-                    <label for="signup_email">
+                    <label for="user_email">
                         E-Mailadresse:
                         <span class="required">*</span>
                     </label>
                     <div class="side-by-side">
-                        <input type="text" name="signup_email" value="${signup_form.values["signup_email"][0]}">
+                        <input type="text" name="user_email" value="${task_form.values["user_email"][0]}">
                     </div>
 
                     <%-- Button zum Abschicken --%>
@@ -106,9 +105,9 @@
                 </div>
 
                 <%-- Fehlermeldungen --%>
-                <c:if test="${!empty signup_form.errors}">
+                <c:if test="${!empty task_form.errors}">
                     <ul class="errors">
-                        <c:forEach items="${signup_form.errors}" var="error">
+                        <c:forEach items="${task_form.errors}" var="error">
                             <li>${error}</li>
                             </c:forEach>
                     </ul>

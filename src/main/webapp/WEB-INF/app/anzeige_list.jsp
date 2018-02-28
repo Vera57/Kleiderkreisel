@@ -102,13 +102,13 @@
                                 <c:out value="${anzeige.owner.username}"/>
                             </td>
                             <td>
-                                <c:out value="${anzeige.anzeigeArt.label}"/>
+                                <c:out value="${anzeige.anzeigeArt}"/>
                             </td>
                             <td>
                                 <c:out value="${anzeige.preis}"/>
                             </td>
                             <td>
-                                <c:out value="${anzeige.preisArt.label}"/>
+                                <c:out value="${anzeige.preisArt}"/>
                             </td>
                             <td>
                                 <c:out value="${utils.formatDate(anzeige.dueDate)}"/>
