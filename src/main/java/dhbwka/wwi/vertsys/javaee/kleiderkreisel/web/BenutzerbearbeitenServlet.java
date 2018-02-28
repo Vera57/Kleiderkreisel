@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Seite zum Anlegen oder Bearbeiten einer Aufgabe.
  */
-@WebServlet(urlPatterns = "/app/bearbeiten/*")
+@WebServlet(urlPatterns = "/app/bearbeiten/")
 public class BenutzerbearbeitenServlet extends HttpServlet {
 
     @EJB

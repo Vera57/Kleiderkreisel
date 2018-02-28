@@ -98,7 +98,7 @@
 
                     <%-- Button zum Abschicken --%>
                     <div class="side-by-side">
-                        <button class="icon-pencil" type="submit">
+                        <button class="icon-pencil" type="submit" value="save" name="action">
                             Änderungen speichern
                         </button>
                     </div>
