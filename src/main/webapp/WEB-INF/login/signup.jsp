@@ -12,7 +12,6 @@
 <%@taglib tagdir="/WEB-INF/tags/templates" prefix="template"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
 <c:set var="base_url" value="<%=request.getContextPath()%>" />
 
 <template:base>

@@ -15,7 +15,7 @@
 
 <template:base>
     <jsp:attribute name="title">
-        Kategorien bearbeiten
+        Benutzer bearbeiten
     </jsp:attribute>
 
     <jsp:attribute name="head">

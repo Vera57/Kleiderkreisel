@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
  * Servlet für die Registrierungsseite. Hier kann sich ein neuer Benutzer
  * registrieren. Anschließend wird der auf die Startseite weitergeleitet.
  */
-@WebServlet(urlPatterns = {"/app/benutzerbearbeiten/"})
+@WebServlet(urlPatterns = {"/app/bearbeiten/"})
 public class BenutzerbearbeitenServlet extends HttpServlet {
     
     @EJB
@@ -41,7 +41,7 @@ public class BenutzerbearbeitenServlet extends HttpServlet {
             throws ServletException, IOException {
         
         // Anfrage an dazugerhörige JSP weiterleiten
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/login/signup.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/app/user_edit.jsp");
         dispatcher.forward(request, response);
         
     }
