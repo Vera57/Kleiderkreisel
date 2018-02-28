@@ -53,12 +53,8 @@
 
             <select name="search_status">
                 <option value="">Alle Angebotsarten</option>
-
-                <c:forEach items="${anzeigeArten}" var="status">
-                    <option value="${anzeigeArt}" ${param.search_anzeigeArt == anzeigeArt ? 'selected' : ''}>
-                        <c:out value="${anzeigeArt.name}"/>
-                    </option>
-                </c:forEach>
+                <option value="biete">Biete</option>
+                <option value="suche">Suche</option>
             </select>
 
             <button class="icon-search" type="submit">
@@ -82,7 +78,7 @@
                             <th>Bezeichnung</th>
                             <th>Kategorie</th>
                             <th>Benutzer</th>
-                            <th>Angebotstyp</th>
+                            <th>Angebotsart</th>
                             <th>Preis</th>
                             <th>Preistyp</th>
                             <th>Datum</th>

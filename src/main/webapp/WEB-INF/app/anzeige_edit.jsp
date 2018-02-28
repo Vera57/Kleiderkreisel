@@ -45,7 +45,7 @@
                 <%-- Eingabefelder --%>
                 <label for="anzeige_category">Kategorie:</label>
                 <div class="side-by-side">
-                    <select name="anzeige_category">
+                    <select name="anzeige_category" <c:if test="${owner.username != user.username}">disabled="true"</c:if>>
                         <option value="">Keine Kategorie</option>
 
                         <c:forEach items="${categories}" var="category">
@@ -58,7 +58,7 @@
                 
                 <label for="anzeige_typ">Art des Angebots:</label>
                 <div class="side-by-side">
-                    <select name="anzeige_typ">
+                    <select name="anzeige_typ" <c:if test="${owner.username != user.username}">disabled="true"</c:if>>
                         <option value="SUCHE">Suche</option>
                         <option value="BIETE">Biete</option>
                     </select>
@@ -69,37 +69,36 @@
                     <span class="required">*</span>
                 </label>
                 <div class="side-by-side">
-                    <input type="text" name="anzeige_short_text" value="${anzeige_form.values["anzeige_short_text"][0]}">
+                    <input type="text" name="anzeige_short_text" value="${anzeige_form.values["anzeige_short_text"][0]}" <c:if test="${owner.username != user.username}">readonly="true"</c:if>>
                 </div>
 
                 <label for="anzeige_long_text">
                     Beschreibung:
                 </label>
                 <div class="side-by-side">
-                    <textarea name="anzeige_long_text"><c:out value="${anzeige_form.values['anzeige_long_text'][0]}"/></textarea>
+                    <textarea name="anzeige_long_text" <c:if test="${owner.username != user.username}">readonly="true"</c:if>><c:out value="${anzeige_form.values['anzeige_long_text'][0]}"/></textarea>
                 </div>
                 
                 <label for="anzeige_preis">Preis:</label>
                 <div class="side-by-side">
-                    <select name="anzeige_preisart">
+                    <select name="anzeige_preisart" <c:if test="${owner.username != user.username}">disabled="true"</c:if>>
                         <option value="VERHANDLUNGSBASIS">Verhandlungsbasis</option>
                         <option value="FESTPREIS">Festpreis</option>
                     </select>
-                    <input type="text" name="anzeige_preis" value="${anzeige_form.values["anzeige_preis"][0]}">
+                    <input type="text" name="anzeige_preis" value="${anzeige_form.values["anzeige_preis"][0]}"<c:if test="${owner.username != user.username}">readonly="true"</c:if>>
                 </div>
 
                 <%-- Button zum Abschicken --%>
                 <div class="side-by-side">
-                    <button class="icon-pencil" type="submit" name="action" value="save">
+                    <button class="icon-pencil" type="submit" name="action" value="save" <c:if test="${owner.username != user.username}">disabled="true"</c:if>>
                         Sichern
                     </button>
 
                     <c:if test="${edit}">
-                        <button class="icon-trash" type="submit" name="action" value="delete">
+                        <button class="icon-trash" type="submit" name="action" value="delete"<c:if test="${owner.username != user.username}">disabled="true"</c:if>>
                             Löschen
                         </button>
                     </c:if>
-                </div>
                 
                 <%-- Datum und Anbieter --%>
                 <h4>Angelegt am:</h4>

@@ -16,7 +16,6 @@ import dhbwka.wwi.vertsys.javaee.kleiderkreisel.ejb.ValidationBean;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.AnzeigeArt;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.PreisArt;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.User;
-//import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.User;
 import dhbwka.wwi.vertsys.javaee.kleiderkreisel.jpa.Verkaufsanzeige;
 import java.io.IOException;
 import java.sql.Date;
@@ -80,6 +79,7 @@ public class VerkaufsanzeigeEditServlet extends HttpServlet {
         }
         
         request.setAttribute("owner", anzeige.getOwner());
+        request.setAttribute("user", this.userBean.getCurrentUser());
         /*if (session.getAttribute("anzeige_form") == null) {
             // Keine Formulardaten mit fehlerhaften Daten in der Session,
             // daher Formulardaten aus dem Datenbankobjekt übernehmen
